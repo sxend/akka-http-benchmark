@@ -1,0 +1,14 @@
+machine:
+  java:
+    version: oraclejdk8
+dependencies:
+  override:
+    - sbt clean "test:compile"
+test:
+  override:
+    - sbt test
+deployment:
+  staging:
+    branch: master
+    commands:
+      - sbt package assembly
