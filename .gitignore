@@ -1,0 +1,15 @@
+target/
+project/target
+bin/
+logs/
+.cache
+.classpath
+.project
+/bin/
+.idea/
+*.iml
+hs_err*.log
+node_modules/
+dist/
+.ensime
+.ensime_cache/
