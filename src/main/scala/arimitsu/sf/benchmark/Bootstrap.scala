@@ -23,9 +23,7 @@ object Bootstrap {
     val wsRoute = path("ws") {
       extractUpgradeToWebSocket { upgrade =>
         complete(upgrade.handleMessages {
-          Flow[Message].mapAsync(16) { _ =>
-            Future.successful(TextMessage(JsonResponse(payload).toJson.compactPrint))
-          }
+          Flow[Message].mapAsync(16)(_ => payloadAsJsonTextMessageF)
         })
       }
     }
@@ -38,5 +36,7 @@ object Bootstrap {
     Http().bindAndHandleAsync(routeHandler, "0.0.0.0", 9000, parallelism = 16)
   }
   private def payload = UUID.randomUUID().toString
+  private def payloadAsJsonTextMessage = TextMessage(JsonResponse(payload).toJson.compactPrint)
+  private def payloadAsJsonTextMessageF = Future.successful(payloadAsJsonTextMessage)
   case class JsonResponse(message: String)
 }
